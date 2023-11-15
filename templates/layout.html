@@ -1,0 +1,23 @@
+{# This is a jinja2 comment, which flask has kindly implemented, you should read more and learn #}
+{# about this different jinja codes as they are quite handy. You can do useful things with these, #} 
+{# including inserting variables, if-else structures and for loops. #}
+
+{# This is our webpage layout-file, in which we can define the default look and information of #}
+{# our pages, like top menu or sidebar or page footer info, that usually are not changed between #}
+{# page changes. #}
+
+{# Currently, this is quite empty, we just define the basic html structure, with added blocks in #}
+{# head and body sections, where our pages will insert the actual data needed. #}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Website</title>
+        {% block header %}
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,56 @@
+{# This is a jinja2 comment, which flask has kindly implemented, you should read more and learn #}
+{# about this different jinja codes as they are quite handy. You can do useful things with these, #} 
+{# including inserting variables (see stylesheet href as example), if-else structures and for loops. #}
+
+{# For testing purposes, I have layout.html, which is to be used as base for all webpages #}
+{# So we need to extend this file to use layout.html #}
+
+{% extends "layout.html" %}
+
+{# In layout.html, there is a reserved block for header info, in which we can insert code from #}
+{# index.html  So here, we insert stylesheet to page header, in case we want to use different #}
+{# css for other webpages. #}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/default.css') }}"
+{% endblock %}
+
+{# Similarly in layout.html, there is block page body, in which we insert actual content of this page. #}
+
+{% block body %}
+    <div>
+        <h1>Hello Oulu!</h1>
+    </div>
+    {#
+    <div>
+        <h2>Säätilanne Intiössä</h2>
+        {% for key, value in weather.items() %}
+            <p>{{ key }}:&emsp;{{ value }}</p>
+        {% endfor %}
+    </div>
+    #}    
+    <div>
+        <h2>Säätilanne Intiössä</h2>
+        <div class="div_box">
+            <h2>Olosuhteet:</h2>
+            <p><span>{{ weather["ILMA"] }} C&deg;</span>Lämpötila:</p>
+            <p><span>{{ weather["ILMAN_KOSTEUS"] }} %</span>Kosteus:</p>
+            <p><span>{{ weather["SADE_KUVAUS"] }}</span>Sade:</p>
+        </div>
+        <div class="div_box compass">
+            <h2>Tuuli:</h2>
+            <p><span>{{ weather["KESKITUULI"] }} m/s</span>Tuuli:</p>
+            <p><span>{{ weather["TUULENSUUNTA"] }} &deg;</span>Suunta:</p>
+        </div>
+        <div class="div_box div_photo">
+            <img src="{{ weather['KUVA'] }}" alt="A photo of motorway in Intiö" id="img_photo">
+        </div>
+        <div class="div_box">
+            <h2>Säätiedot tarjoaa:</h2>
+            <p><a href="https://www.digitraffic.fi/">Digitraffic</a></p>
+            <p><span>{{ weather["MITTAUSAIKA"] }}</span>Sään mittausaika:</p>
+            <p><span>{{ weather["KUVAUSAIKA"] }}</span>Kuvausaika:</p>
+        </div>
+    </div>
+{% endblock %}
+

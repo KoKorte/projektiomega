@@ -1,0 +1,11 @@
+{# This is a test page for base64 encoded photo #}
+{% extends "layout.html" %}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/default.css') }}"
+{% endblock %}
+
+{% block body %}    
+    <img src="{{ photo[0] }}" alt="moottoritie" width="50%" height="50%">
+    <img src="{{ photo[0] }}" alt="moottoritie">
+{% endblock %}
