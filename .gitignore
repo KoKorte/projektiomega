@@ -151,9 +151,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# Sqlite3 databases
-static/db/website.db
 
-# Configuration file
-config.py
+# Configuration files
+config-site/config.py
 
