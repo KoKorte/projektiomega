@@ -1,9 +1,26 @@
 # Import libraries
 from datetime import datetime
 from requests import get
-import sql
+from sql import createTables, getLatestPhoto, getLatestWeather, insertPhoto, insertWeather
 import photo
 import config
+
+def windSpeed(speed):
+    if 0 <= speed < 1:
+        return "Tyyntä"
+    if 1 <= speed < 4:
+        return "Heikkoa"
+    if 4 <= speed < 8:
+        return "Kohtalaista"
+    if 8 <= speed < 14:
+        return "Navakkaa"
+    if 14 <= speed < 21:
+        return "Kovaa"
+    if 21 <= speed < 33:
+        return "Myrsky"
+    if 33 <= speed:
+        return "Hirmumyrsky"
+    
 
 def getWeatherData():
     return_value = dict()
@@ -11,10 +28,11 @@ def getWeatherData():
 
     # Digitraffic.fi allows maximum of 60 apicalls per minute, so we are going to store the results into the database and only get
     # refreshed periodically in order to not get blocked by digitraffic. 
-    sql.createTables()
-    weather = sql.getLatestWeather()
-    photoinfo = sql.getLatestPhoto()
+    createTables()
+    weather = getLatestWeather()
+    photoinfo = getLatestPhoto()    
 
+    # Get the current datetime value
     current_time = datetime.now()
 
     # If database is empty
@@ -37,7 +55,9 @@ def getWeatherData():
 
     # Do the api call    
     if getapi == True:
+        # print this to terminal running the framework to see where the data came from
         print("api")
+
         # Url for open source api call, provider digitraffic.fi, which maintains lots of weather stations along Finnish road network
         # This site is located alongside Highway no 4, Oulu (Intiö), Finland (https://tie.digitraffic.fi/api/weather/v1/stations/12019)
         # List of all weather stations: https://tie.digitraffic.fi/api/weather/v1/stations
@@ -61,7 +81,7 @@ def getWeatherData():
                     sensors[16]['value'], sensors[16]['sensorValueDescriptionFi'],  sensors[16]['sensorValueDescriptionEn'])
         
         # Insert values to Weather table
-        sql.insertWeather(parameters)
+        insertWeather(parameters)
         
         # Get the photo metainfo
         url = "https://tie.digitraffic.fi/api/weathercam/v1/stations/C12612/data"
@@ -82,7 +102,13 @@ def getWeatherData():
         # Create tuple of parameters to be inserted to Photo table
         parameters = (current_time, localpresettime, b64photo)
         # Insert values to Photo table
-        sql.insertPhoto(parameters)
+        insertPhoto(parameters)
+
+        # Draw wind direction compass and save it as compass.jpg
+        photo.drawArrow(sensors[14]['value'])
+
+        # Get wind speed description
+        windspeed = windSpeed(sensors[12]['value'])
 
         # SensorValueDescriptionFi values
         # - Pouta
@@ -102,6 +128,7 @@ def getWeatherData():
                         sensors[16]['name']:sensors[16]['value'],
                         sensors[16]['name']+"_KUVAUS":sensors[16]['sensorValueDescriptionFi'],
                         sensors[16]['name']+"_DESC":sensors[16]['sensorValueDescriptionEn'],
+                        "TUULISELITE": windspeed,
                         "KUVAUSAIKA":localpresettime,
                         "KUVA": b64photo}
         
@@ -125,7 +152,12 @@ def getWeatherData():
 
     # Return values from sql database
     else:
+        # print this to terminal running the framework to see where the data came from
         print("sql")
+
+        # Get wind speed description
+        windspeed = windSpeed(weather[3])
+
         # Create dictionary from sql values
         return_value = {"MITTAUSAIKA":weather[1],
                         "ILMA":weather[2],
@@ -135,6 +167,7 @@ def getWeatherData():
                         "SADE":weather[6],
                         "SADE_KUVAUS":weather[7],
                         "SADE_DESC":weather[8],
+                        "TUULISELITE":windspeed,
                         "KUVAUSAIKA": photoinfo[1],
                         "KUVA": photoinfo[2]}
     # Return the correct dictionary

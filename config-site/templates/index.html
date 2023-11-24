@@ -21,7 +21,7 @@
     <div>
         <h1>Hello Oulu!</h1>
     </div>
-    {#
+    {# This block is commented as it is no longer needed. Keeping it in for debug tests
     <div>
         <h2>Säätilanne Intiössä</h2>
         {% for key, value in weather.items() %}
@@ -41,6 +41,7 @@
             <h2>Tuuli:</h2>
             <p><span>{{ weather["KESKITUULI"] }} m/s</span>Tuuli:</p>
             <p><span>{{ weather["TUULENSUUNTA"] }} &deg;</span>Suunta:</p>
+            <p><span>{{ weather["TUULISELITE"] }}</span>Voimakkuus:</p>
         </div>
         <div class="div_box div_photo">
             <img src="{{ weather['KUVA'] }}" alt="A photo of motorway in Intiö" id="img_photo">

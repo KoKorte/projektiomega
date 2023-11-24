@@ -13,7 +13,9 @@
 # Import needed libraries and functions
 from flask import Flask, render_template
 from weather_api import getWeatherData
+from electricity_api import getElectricityPrices
 import sqlite3
+import config
 
 # Initialize app
 app = Flask(__name__)
@@ -23,6 +25,9 @@ app = Flask(__name__)
 # Tell flask to render template page index.html
 def root():
     weather = getWeatherData()
+    if config.show_electricityprices == True:
+        # Not ready yet
+        electricity = getElectricityPrices()
     return render_template("index.html", weather = weather)
 
 
