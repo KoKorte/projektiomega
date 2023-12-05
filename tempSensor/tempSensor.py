@@ -4,6 +4,7 @@ import time
 import sqlite3
 import math
 import os
+import RPi.GPIO as GPIO
 
 # TODO lisää automaatio.py tiedosto kun se on tehty if-lauseeseen, lisää lokimerkintä SEKÄ RELEEN PINNIN tilan tarkistus??? configvalues db puuttuu lämpötiloja...
 #
@@ -54,7 +55,10 @@ connection.close()#suljetaan yhteys
 # Verrataan minimilämpötilaa (configlistan antaman tuplen ensimmäinen elementti) nykyiseen mitattuun lämpötilaan
 # jos anturin nykyinen mitattu lämpötila on pienempi kuin minimilämpötila niin suoritetaan laitteiden automatio-ohjaus pythonscripti.
 # sekä lokimerkintä. 
-if temperature < configlista[0][0]:
+if temperature < configlista[0][0] and GPIO.input(17) == False:
+    print("Suorita laitteiden automaatio-ohjaus!")
+    #os.system("py automaatio.py")
+elif temperature > configlista[0][0] and GPIO.input(17) == True:
     print("Suorita laitteiden automaatio-ohjaus!")
     #os.system("py automaatio.py")
 
