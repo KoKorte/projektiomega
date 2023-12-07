@@ -30,7 +30,7 @@ for row in rows:
 
 print(configlista[0])
 print(configlista[0][0])
-
+time.sleep(3)
 
 
 # 22 on DHT 22 ja 18 on GPIO 18 pinni
@@ -55,12 +55,14 @@ connection.close()#suljetaan yhteys
 # Verrataan minimilämpötilaa (configlistan antaman tuplen ensimmäinen elementti) nykyiseen mitattuun lämpötilaan
 # jos anturin nykyinen mitattu lämpötila on pienempi kuin minimilämpötila niin suoritetaan laitteiden automatio-ohjaus pythonscripti.
 # sekä lokimerkintä. 
-if temperature < configlista[0][0] and GPIO.input(17) == False:
-    print("Suorita laitteiden automaatio-ohjaus!")
-    #os.system("py automaatio.py")
-elif temperature > configlista[0][0] and GPIO.input(17) == True:
-    print("Suorita laitteiden automaatio-ohjaus!")
-    #os.system("py automaatio.py")
+temperature = 21.0
+if temperature < configlista[0][0]:
+    print("Suorita laitteiden automaatio-ohjaus rele päälle!")
+    #os.system("python automaatio.py")
+
+elif temperature > configlista[0][0]:
+    print("Suorita laitteiden automaatio-ohjaus rele pois päältä!")
+    #os.system("python automaatio.py")
 
 
 #time.sleep(3.0)

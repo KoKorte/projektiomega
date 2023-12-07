@@ -20,6 +20,6 @@ if sys.argv[1] == 'on':
 #time.sleep(3)
 if sys.argv[1] == 'off':
     print ("rele pois päältä")
-    GPIO.output(relay_ch, GPIO.LOW)
+  #  GPIO.output(relay_ch, GPIO.LOW)
     GPIO.setup(relay_ch, GPIO.IN)
     GPIO.cleanup()
