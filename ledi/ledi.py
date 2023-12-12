@@ -1,6 +1,15 @@
 from time import sleep
 import RPi.GPIO as GPIO, sqlite3, time, datetime
 
+#testataan yhteys tietokantaan ja tarkastetaan tuleeko ongelmia
+try:
+	connection = sqlite3.connect('/home/omega/PythonKoodit/projektiomega/db/omega.db')#avataan yhteys omega.db tietokantaan
+	cursor = connection.cursor()
+#luodaan except joka hakee virheen
+except sqlite3.Error as e:
+	print(f"Database error: {e}")#tulostetaan mistä virhe johtuu
+	
+#luodaan yhteys tietokantaan
 while True:
 	connection = sqlite3.connect('/home/omega/PythonKoodit/projektiomega/db/omega.db')#avataan yhteys omega.db tietokantaan
 	test = datetime.datetime.today().timetuple()
@@ -10,6 +19,7 @@ while True:
 	print("Time:", t)
 	print(h)
 
+#haetaan config ja price listoista tietoja
 	configlista = []
 	pricelista = []
 	cursor = connection.cursor()
@@ -23,6 +33,7 @@ while True:
 	print("Min hinta ", configlista[0][2])
 	print("Max hinta ", configlista[0][3])
 
+#haetaan ElectricityPrices listasta päiväys ja tunti
 	cursor = connection.cursor()
 	cursor.execute("SELECT * from ElectricityPrices WHERE PriceDate like ? AND DateHour=?",(t,h))
 	rivit = cursor.fetchall()
@@ -42,17 +53,22 @@ while True:
 
 	print("CTRL + C to quit")
 
+#jos hinta on halpaa, vilkutetaan vihreää lediä
 	if configlista[0][2] > pricelista[0][3]:
 		GPIO.setup(LED_RED, GPIO.OUT)
 		hintapinni = LED_GREEN
-	
+
+#jos hinta on kallista, vilkutetaan punaista lediä
 	elif configlista[0][3] < pricelista[0][3]:
 		GPIO.setup(LED_GREEN, GPIO.OUT)
 		hintapinni = LED_RED
-	
+
+#jos hinta ei ole halpaa, eikä kallista, vilkutetaan keltaista lediä
 	else:
 		GPIO.setup(LED_YELLOW, GPIO.OUT)
 		hintapinni = LED_YELLOW
+		
+#luodaan laskuri muuttuja, jolla voidaan määrittää ledien vilkkumisen aika
 	laskuri = 0
 	try:
 #looppi, jossa ledit ovat valaistuneena sekunnin ajan, jonka jälkeen ledi sammuu ja seuraava syttyy
