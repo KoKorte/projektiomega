@@ -1,5 +1,5 @@
 from time import sleep
-import RPi.GPIO as GPIO, sqlite3, time, datetime
+import RPi.GPIO as GPIO, sqlite3, time, datetime, sys
 
 #testataan yhteys tietokantaan ja tarkastetaan tuleeko ongelmia
 try:
@@ -33,14 +33,16 @@ while True:
 	print("Min hinta ", configlista[0][2])
 	print("Max hinta ", configlista[0][3])
 
-#haetaan ElectricityPrices listasta päiväys ja tunti
+#haetaan ElectricityP
+	LED_YELLOW = 24
+	LED_GREEN = 23
 	cursor = connection.cursor()
 	cursor.execute("SELECT * from ElectricityPrices WHERE PriceDate like ? AND DateHour=?",(t,h))
 	rivit = cursor.fetchall()
 	for rivi in rivit:
 		pricelista = [rivi]
 
-	print("Hinta nyt ", pricelista[0][3])
+	print("Hinta nyt ", pricelista[0][4])
 	connection.close()#suljetaan yhteys
 
 #asetetaan pinnit ledeille
@@ -54,31 +56,30 @@ while True:
 	print("CTRL + C to quit")
 
 #jos hinta on halpaa, vilkutetaan vihreää lediä
-	if configlista[0][2] > pricelista[0][3]:
-		GPIO.setup(LED_RED, GPIO.OUT)
+	if configlista[0][2] > pricelista[0][4]:
+		GPIO.setup(LED_GREEN, GPIO.OUT)
 		hintapinni = LED_GREEN
 
 #jos hinta on kallista, vilkutetaan punaista lediä
-	elif configlista[0][3] < pricelista[0][3]:
-		GPIO.setup(LED_GREEN, GPIO.OUT)
+	elif configlista[0][3] < pricelista[0][4]:
+		GPIO.setup(LED_RED, GPIO.OUT)
 		hintapinni = LED_RED
 
 #jos hinta ei ole halpaa, eikä kallista, vilkutetaan keltaista lediä
 	else:
 		GPIO.setup(LED_YELLOW, GPIO.OUT)
 		hintapinni = LED_YELLOW
-		
-#luodaan laskuri muuttuja, jolla voidaan määrittää ledien vilkkumisen aika
-	laskuri = 0
-	try:
-#looppi, jossa ledit ovat valaistuneena sekunnin ajan, jonka jälkeen ledi sammuu ja seuraava syttyy
-		while laskuri < 30:
 
+	tunnit = test[3]	
+#looppi, jossa ledit ovat valaistuneena sekunnin ajan, jonka jälkeen ledi sammuu ja seuraava syttyy
+	try:
+		while tunnit == test[3]:
+			test = datetime.datetime.today().timetuple()
 			GPIO.output(hintapinni, GPIO.HIGH)
 			sleep(1)
 			GPIO.output(hintapinni, GPIO.LOW)
 			sleep(3)
-			laskuri += 1
-		
-	finally:
+
+	except:
 		GPIO.cleanup()
+		sys.exit(0)
