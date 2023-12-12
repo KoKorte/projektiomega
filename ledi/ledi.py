@@ -53,8 +53,32 @@ while True:
 #pinnit asetetaan output moodiin
 	GPIO.setmode(GPIO.BCM)
 
-	print("CTRL + C to quit")
-
+#väläytetään kaikki ledit kun hintatiedot päivittyvät
+	#vihreä ledi output -> high -> low -> input 
+	GPIO.setup(LED_GREEN, GPIO.OUT)
+	GPIO.output(LED_GREEN, GPIO.HIGH)
+	sleep(0.2)
+	GPIO.output(LED_GREEN, GPIO.LOW)
+	sleep(0.2)
+	GPIO.setup(LED_GREEN, GPIO.IN)
+	
+	#keltainen ledi output -> high -> low -> input 
+	GPIO.setup(LED_YELLOW, GPIO.OUT)
+	GPIO.output(LED_YELLOW, GPIO.HIGH)
+	sleep(0.2)
+	GPIO.output(LED_YELLOW, GPIO.LOW)
+	sleep(0.2)
+	GPIO.setup(LED_YELLOW, GPIO.IN)
+	
+	#punainen ledi output -> high -> low -> input 
+	GPIO.setup(LED_RED, GPIO.OUT)
+	GPIO.output(LED_RED, GPIO.HIGH)
+	sleep(0.2)
+	GPIO.output(LED_RED, GPIO.LOW)
+	sleep(0.2)
+	GPIO.setup(LED_RED, GPIO.IN)
+	
+	
 #jos hinta on halpaa, vilkutetaan vihreää lediä
 	if configlista[0][2] > pricelista[0][4]:
 		GPIO.setup(LED_GREEN, GPIO.OUT)
