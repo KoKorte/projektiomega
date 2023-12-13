@@ -1,64 +1,72 @@
-# Pohja laitteiden automaatio-ohjaukselle
-# Tee muutokset!
-
+# Laitteiden automaattinen ohjaus, joka ohjaa relettä tempSensor.py:n kutsusta
+# Lisätään kirjastot datetime, os ja sqlite3
 import datetime, os
 import sqlite3
 
-# datetime
-x = datetime.datetime.now()
-t = x.strftime("%Y-%m-%d"+'%')#aika ilmoitetaan muodossa vuosi-kuukausi-päivä
-h = x.strftime("%H") # tunti jota käytetään sähkönhinnan haussa kyseiselle tunnille.
+# Haetaan datetime -kirjastosta vaadittavat ajanmääreet
+x = datetime.datetime.now()	# Nykyinen ajanmääre
+t = x.strftime("%Y-%m-%d")	# Aika ilmoitetaan muodossa vuosi-kuukausi-päivä
+h = x.strftime("%H") 		# Tunti jota käytetään sähkönhinnan haussa kyseiselle tunnille
 
+# Testataan yhteys tietokantaan ja tarkastetaan tuleeko ongelmia
+try:
+    # Avataan yhteys omega.db tietokantaan
+    connection = sqlite3.connect('/home/omega/PythonKoodit/projektiomega/db/omega.db')
+    cursor = connection.cursor()
+# Luodaan except joka hakee virheen
+except sqlite3.Error as e:
+    print(f"Database error: {e}")	# Tulostetaan mistä virhe johtuu
 
-connection = sqlite3.connect('/home/omega/PythonKoodit/projektiomega/db/omega.db')#avataan yhteys omega.db tietokantaan
-
-# ladataan config
-configlista = []
+# Haetaan ConfigValues -taulu, josta haetaan raja-arvot
+configList = []
 cursor = connection.cursor()
 cursor.execute("SELECT * from ConfigValues")
 rows = cursor.fetchall()
 
 for row in rows:
-	configlista = [row]
+    configList = [row]
 
-print("Min lämpötila ", configlista[0][0])
-print("Min hinta ", configlista[0][2])
-print("Max hinta ", configlista[0][3])
+print("Min temperature: ", configList[0][0])
+minTemp=configList[0][0] 
+print("Min price: ", configList[0][2])
+minPrice=configList[0][2]
+print("Max price: ", configList[0][3])
+maxPrice=configList[0][3]
 
 
-# ladataan hintatiedot
+# Haetaan sähkönhinnat ElectricityPrices -taulusta
 cursor = connection.cursor()
-cursor.execute("SELECT * from ElectricityPrices WHERE PriceDate like ? AND DateHour=?",(t,h))
+cursor.execute("SELECT * from ElectricityPrices WHERE PriceDate=? AND DateHour=?",(t,h))
 rivit = cursor.fetchall()
 for rivi in rivit:
-	pricelista = [rivi]
+    priceList = [rivi]
+	
+roundedPrice = round(priceList[0][4], 5)
+print("Price now: ", roundedPrice)
 
-print("Hinta nyt ", pricelista[0][4])
-
-# ladataan lämpötilatiedot
-temperatureLista = []
+# Haetaan viimeisin mitattu lämpötila Temperature -taulusta
+temperatureList = []
 cursor = connection.cursor()
 cursor.execute("SELECT * from Temperature where LoggedTime = (select max(LoggedTime) from Temperature)")
 rows = cursor.fetchall()
 for row in rows:
-	temperatureLista = [row]
+    temperatureList = [row]
 
-print("Viimeisin lämpötila ", temperatureLista[0][2])
+print("Latest temperature: ", temperatureList[0][2])
+currentTemp=temperatureList[0][2]
 connection.close()#suljetaan yhteys
 
+# Tarkistetaan ylittyvätkö raja-arvot lämpötiloissa
+tempOffset = 0	# Annetaan tempOffsetille alkuarvo
 
-# ylittyykö raja-arvot lämpötiloissa
-tempOffset = 0
+if minPrice >= roundedPrice:	# Jos sähkönhinta on alle tai yhtäsuuri kuin minimi hinta,
+    tempOffset = 2		# lisätään minimi lämpötilaan +2 Celsiusta
 
-if configlista[0][2] > pricelista[0][4]:
-	tempOffset = 3
-
-
-if temperatureLista[0][2] < configlista[0][0]+tempOffset:
-    #print("rele päälle!")
+# Jos nykyinen lämpötila on alle minimiarvon, kytketään rele päälle
+if currentTemp < minTemp+tempOffset:
     os.system("python /home/omega/PythonKoodit/projektiomega/rele/rele.py on")
 
-elif temperatureLista[0][2] > configlista[0][0]+tempOffset:
-    #print("rele pois päältä!")
+# Jos nykyinen lämpötila on yli minimiarvon, kytketään rele pois päältä
+elif currentTemp > minTemp+tempOffset:
     os.system("python /home/omega/PythonKoodit/projektiomega/rele/rele.py off")
 
