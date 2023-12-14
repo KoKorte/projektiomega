@@ -81,12 +81,12 @@ while True:
 	
 	
 # Jos hinta on halpaa, vilkutetaan vihreää lediä
-	if configList[0][2] > priceList[0][4]:
+	if minPrice > currentPrice:
 		GPIO.setup(LED_GREEN, GPIO.OUT)
 		hintapinni = LED_GREEN
 
 # Jos hinta on kallista, vilkutetaan punaista lediä
-	elif configList[0][3] < priceList[0][4]:
+	elif maxPrice < currentPrice:
 		GPIO.setup(LED_RED, GPIO.OUT)
 		hintapinni = LED_RED
 
@@ -95,6 +95,11 @@ while True:
 		GPIO.setup(LED_YELLOW, GPIO.OUT)
 		hintapinni = LED_YELLOW
 
+# Luodaan tekstitiedosto logitukselle
+	f=open("ledlog.txt", "a")
+	f.write(f"{t} {h} LED käynyt päällä Current Price: {currentPrice} Väri: {hintapinni}\n")
+	f.close()
+	
 	hours = test[3]	
 # Sisempi silmukka, joka pyörii tunnin ajan ja poistutaan tunnin vaihtuessa ulompaan silmukkaan
 	try:

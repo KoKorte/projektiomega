@@ -65,8 +65,14 @@ if minPrice >= roundedPrice:	# Jos sähkönhinta on alle tai yhtäsuuri kuin min
 # Jos nykyinen lämpötila on alle minimiarvon, kytketään rele päälle
 if currentTemp < minTemp+tempOffset:
     os.system("python /home/omega/PythonKoodit/projektiomega/rele/rele.py on")
+    f1=open("automaatiolog.txt", "a")
+    f1.write(f"{t} {h} Rele ON currentTemp: {currentTemp} tempOffset: {tempOffset}\n")
+    f1.close()
 
 # Jos nykyinen lämpötila on yli minimiarvon, kytketään rele pois päältä
 elif currentTemp > minTemp+tempOffset:
     os.system("python /home/omega/PythonKoodit/projektiomega/rele/rele.py off")
+    f2=open("automaatiolog.txt", "a")
+    f2.write(f"{t} {h} Rele OFF currentTemp: {currentTemp} tempOffset: {tempOffset}\n")
+    f2.close()
 
