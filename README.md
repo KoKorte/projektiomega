@@ -1,11 +1,18 @@
 # Omega
 
-## Projektin kuvaus
+## Project description
 
-## Työkalut
--
--
 
-## Ryhmän jäsenet
+## Tools and components
+- Raspberry Pi 4
+- DHT 22 temperature and humidity component
+- Relay module
+- SQLite database
 
-## Lisenssi
+## Members
+Juntunen Sampo
+Korteniemi Niko
+Penttinen Kimmo
+
+## License
+This project falls under MIT license
