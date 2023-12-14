@@ -82,6 +82,7 @@ def insertLogStamp(parameters):
     # Commit the changes to the database
     conn.commit()
     conn.close()
+    
 # Check if given date can be found in ElectricityLog table
 def checkElectricityDate(parameters):
     conn = sqlite3.connect(path)

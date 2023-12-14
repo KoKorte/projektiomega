@@ -23,12 +23,11 @@ app = Flask(__name__)
 # Set root folder, this tells what happens when the default location is loaded
 @app.route('/')
 # Tell flask to render template page index.html
-def root():
-    weather = getWeatherData()
-    if config.show_electricityprices == True:
-        # Not ready yet
-        electricity = getElectricityPrices()
-    return render_template("index.html", weather = weather)
+def root():    
+    values = getWeatherData()
+    if config.show_electricityprices == True:        
+        values.update(getElectricityPrices())    
+    return render_template("index.html", values = values)
 
 
 @app.route('/photo')

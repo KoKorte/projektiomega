@@ -1,6 +1,6 @@
-from datetime import date, datetime, timezone, timedelta
+from datetime import date, datetime, timedelta
 from requests import get
-from sql import insertElectricityLog, insertElectricityPrices, checkElectricityDate
+from sql import insertElectricityLog, insertElectricityPrices, checkElectricityDate, getTodaysElectricityPrices
 import xmltodict
 import config
 
@@ -71,34 +71,66 @@ def callAPI(daterange, fetchdate):
 
 
 def getElectricityPrices():
+    average = 0
+    highest = 0
+    tomorrowdata = False
     # Get date as tuple so we can construct period start and end for api call
-    datetuple = date.today().timetuple()
-    
+    datetuple = datetime.now().timetuple()
+    year = str(datetuple[0])
+    month = str(f'{datetuple[1]:02d}')
+    yesterday = str(f'{(datetuple[2] - 1):02d}')
+    today = str(f'{(datetuple[2]):02d}')
+    tomorrow = str(f'{(datetuple[2] + 1):02d}')
+    hour = datetuple[3]    
+
     # Check if today's electricity prices can be found in database
     check = checkElectricityDate((str(date.today()),))
     # If today's prices are missing, try to get them
     if check == False:
         # Fetch today's electricity prices
-        daterange = "&periodStart=" + str(datetuple[0]) + str(datetuple[1]) + str(datetuple[2] - 1) + "2300"
-        daterange += "&periodEnd=" + str(datetuple[0]) + str(datetuple[1]) + str(datetuple[2]) + "2300"
+        daterange = "&periodStart=" + year + month + yesterday + "2300"
+        daterange += "&periodEnd=" + year + month + today + "2300"
         response = callAPI(daterange, date.today())
         # If api call was successful, add the date to the ElectricityLog table
         if response == True:
-            insertElectricityLog((str(date.today()),))
+            insertElectricityLog((year + '-' + month + '-' + today,))
     
     # Check if tomorrow's electricity prices can be found in database
     check = checkElectricityDate((str(date.today() + timedelta(days=1)),))
-    # If tomorrow's prices are missing, try to get them
-    if check == False:
+    # If tomorrow's prices are missing, try to get them, after they have been published at 14:00 EET
+    if check == False and hour >= 14:
         # Fetch today's electricity prices
-        daterange = "&periodStart=" + str(datetuple[0]) + str(datetuple[1]) + str(datetuple[2]) + "2300"
-        daterange += "&periodEnd=" + str(datetuple[0]) + str(datetuple[1]) + str(datetuple[2] + 1) + "2300"
+        daterange = "&periodStart=" + year + month + today + "2300"
+        daterange += "&periodEnd=" + year + month + tomorrow + "2300"
         response = callAPI(daterange, date.today() + timedelta(days=1))
         # If api call was successful, add the date to the ElectricityLog table
         if response == True:
-            insertElectricityLog((str(date.today() + timedelta(days=1)),))
+            # insertElectricityLog((str(date.today() + timedelta(days=1)),))
+            insertElectricityLog((year + '-' + month + '-' + tomorrow,))
 
-    return "not finished yet"
+    # Get todays data from database 
+    prices = dict(getTodaysElectricityPrices((year + '-' + month + '-' + today,)))
+    average = f'{(sum(prices.values()) / len(prices)):.2f}'
+    prices ={k:v for k,v in prices.items() if k >= hour}
+    pricenow = prices[hour]
+    highest = max(prices, key=prices.get)
+    lowest = min(prices, key=prices.get)
+    values = {'now': pricenow, 'hour': hour, 'average1': average, 'high_hour1': highest, 'high_price1': prices[highest], 'low_hour1': lowest, 'low_price1': prices[lowest]}
+    # values.update({'kukkuu':'pöö', 'test':1})
+
+    # Get tomorrows data from database (if they exist)    
+    prices = dict(getTodaysElectricityPrices((year + '-' + month + '-' + tomorrow,)))
+    if len(prices) > 0:
+        tomorrowdata = True
+        average = f'{(sum(prices.values()) / len(prices)):.2f}'        
+        highest = max(prices, key=prices.get)
+        lowest = min(prices, key=prices.get)
+        values.update({'average2': average, 'high_hour2': highest, 'high_price2': prices[highest], 'low_hour2': lowest, 'low_price2': prices[lowest]})
+    
+    # Insert boolean to tell if tomorrows data is available
+    values['tomorrow'] = tomorrowdata
+        
+    return values
 
 # DEBUG function call
 # print(getElectricityPrices())

@@ -137,6 +137,15 @@ def getLatestPhoto():
     conn.close()
     return value
 
+# Get todays electricity prices
+def getTodaysElectricityPrices(parameters):
+    conn = sqlite3.connect(path)
+    sql = conn.cursor()
+    clause = "select DateHour, round(Price,2) from ElectricityPrices where PriceDate = ?"
+    value = sql.execute(clause, parameters).fetchall()
+    conn.close()
+    return value
+
 # Check if given date can be found in ElectricityLog table
 def checkElectricityDate(parameters):
     conn = sqlite3.connect(path)
@@ -149,4 +158,3 @@ def checkElectricityDate(parameters):
         return False
     else:
         return True
-    

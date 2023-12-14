@@ -22,9 +22,10 @@
         <h1>Hello Oulu!</h1>
     </div>
     {# This block is commented as it is no longer needed. Keeping it in for debug tests
+        average1, average2, tomorrow
     <div>
         <h2>Säätilanne Intiössä</h2>
-        {% for key, value in weather.items() %}
+        {% for key, value in values.items() %}
             <p>{{ key }}:&emsp;{{ value }}</p>
         {% endfor %}
     </div>
@@ -32,26 +33,60 @@
     <div>
         <h2>Säätilanne Intiössä</h2>
         <div class="div_box">
-            <h2>Olosuhteet:</h2>
-            <p><span>{{ weather["ILMA"] }} C&deg;</span>Lämpötila:</p>
-            <p><span>{{ weather["ILMAN_KOSTEUS"] }} %</span>Kosteus:</p>
-            <p><span>{{ weather["SADE_KUVAUS"] }}</span>Sade:</p>
+            <h3>Olosuhteet:</h3>
+            <p><span>{{ values["ILMA"] }} C&deg;</span>Lämpötila:</p>
+            <p><span>{{ values["ILMAN_KOSTEUS"] }} %</span>Kosteus:</p>
+            <p><span>{{ values["SADE_KUVAUS"] }}</span>Sade:</p>
         </div>
         <div class="div_box compass">
-            <h2>Tuuli:</h2>
-            <p><span>{{ weather["KESKITUULI"] }} m/s</span>Tuuli:</p>
-            <p><span>{{ weather["TUULENSUUNTA"] }} &deg;</span>Suunta:</p>
-            <p><span>{{ weather["TUULISELITE"] }}</span>Voimakkuus:</p>
+            <h3>Tuuli:</h3>
+            <p><span>{{ values["KESKITUULI"] }} m/s</span>Tuuli:</p>
+            <p><span>{{ values["TUULENSUUNTA"] }} &deg;</span>Suunta:</p>
+            <p><span>{{ values["TUULISELITE"] }}</span>Voimakkuus:</p>
         </div>
         <div class="div_box div_photo">
-            <img src="{{ weather['KUVA'] }}" alt="A photo of motorway in Intiö" id="img_photo">
+            <img src="{{ values['KUVA'] }}" alt="A photo of motorway in Intiö" id="img_photo">
         </div>
         <div class="div_box">
-            <h2>Säätiedot tarjoaa:</h2>
+            <h3>Säätiedot tarjoaa:</h3>
             <p><a href="https://www.digitraffic.fi/">Digitraffic</a></p>
-            <p><span>{{ weather["MITTAUSAIKA"] }}</span>Sään mittausaika:</p>
-            <p><span>{{ weather["KUVAUSAIKA"] }}</span>Kuvausaika:</p>
+            <p><span>{{ values["MITTAUSAIKA"] }}</span>Sään mittausaika:</p>
+            <p><span>{{ values["KUVAUSAIKA"] }}</span>Kuvausaika:</p>
         </div>
     </div>
+    {% if 'now' in values %}
+    <div>
+        <h2>Pörssisähkötriviaa</h2>
+        <div class="div_box">
+            <h3>Hinta nyt:</h3>
+            <p><span style="font-size:4em;"><b>{{ values["now"] }}</b></span></p>            
+            <p><span>c/kWh</span></p>
+        </div>
+        <div class="div_box">
+            <h3>Tänään klo {{ values["hour"] }} eteenpäin:</h3>            
+            <p><span>{{ values["average1"] }} c/kWh</span>Keskihinta:</p>
+            <p><span>{{ values["high_hour1"] }}:00 - {{ values["high_price1"] }} c/kWh</span>Kallein hinta:</p>
+            <p><span>{{ values["low_hour1"] }}:00 - {{ values["low_price1"] }} c/kWh</span>Halvin hinta:</p>
+        </div>
+        {% if values["tomorrow"] == True %}
+        <div class="div_box">
+            <h3>Huomenna:</h3>
+            <p><span>{{ values["average2"] }} c/kWh</span>Keskihinta:</p>
+            <p><span>{{ values["high_hour2"] }}:00 - {{ values["high_price2"] }} c/kWh</span>Kallein hinta:</p>
+            <p><span>{{ values["low_hour2"] }}:00 - {{ values["low_price2"] }} c/kWh</span>Halvin hinta:</p>
+        </div>
+        {% else %}
+        <div class="div_box">
+            <h3>Huomenna:</h3>
+            <p><b>Hintatietoja ei vielä saatavilla</b></p>
+        </div>
+        {% endif %}
+        <div class="div_box">
+            <h3>Hintatiedot tarjoaa:</h3>
+            <p><a href="https://www.entsoe.eu/">European Network of Transmission System Operators for electricity</a> (ENTSO-E)</p>            
+            <p><a href="https://transparency.entsoe.eu/">Transparency Platform</a></p>
+        </div>
+    </div>
+    {% endif %}    
 {% endblock %}
 

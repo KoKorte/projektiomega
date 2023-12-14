@@ -1,6 +1,6 @@
 from datetime import date, datetime, timezone, timedelta
 from requests import get
-from sql import createTables, insertElectricityLog, insertElectricityPrices, checkElectricityDate
+from sql import createTables, insertElectricityLog, insertElectricityPrices, checkElectricityDate, getTodaysElectricityPrices
 import xmltodict
 import config
 
@@ -76,21 +76,10 @@ def getElectricityPrices():
     datetuple = date.today().timetuple()    
     # Get strings year and month from datetuple
     year = str(datetuple[0])
-    month = str(datetuple[1])
-    # Add leading zero to month if it is missing
-    if len(month) == 1:
-        month = '0' + month    
-    # We need to three dates in order to create correct time ranges 
-    yesterday = str(datetuple[2] - 1)
-    today = str(datetuple[2])
-    tomorrow = str(datetuple[2] + 1)
-    # Add leading zeroes to dates if those are missing
-    if len(yesterday) == 1:
-        yesterday = '0' + yesterday    
-    if len(today) == 1:
-        today = '0' + today
-    if len(tomorrow) == 1:
-        tomorrow = '0' + tomorrow
+    month = str(f'{datetuple[1]:02d}')
+    yesterday = str(f'{(datetuple[2] - 1):02d}')
+    today = str(f'{(datetuple[2]):02d}')
+    tomorrow = str(f'{(datetuple[2] + 1):02d}')
     
     # Check if today's electricity prices can be found in database
     check = checkElectricityDate((str(date.today()),))
