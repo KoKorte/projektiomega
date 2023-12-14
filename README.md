@@ -3,7 +3,7 @@
 ## Project description
 
 
-## Tools and components
+## Tools and technologies
 - Raspberry Pi 4
 - DHT 22 temperature and humidity component
 - Relay module
