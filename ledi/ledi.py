@@ -18,8 +18,8 @@ while True:
 	x = datetime.datetime.now()	# Haetaan datetime -kirjastosta vaadittavat ajanmääreet
 	t = x.strftime("%Y-%m-%d")	# Aika ilmoitetaan muodossa vuosi-kuukausi-päivä
 	h = x.strftime("%H")		# Tunti jota käytetään sähkönhinnan haussa kyseiselle tunnille.
-	print("Time:", t)
-	print(h)
+	#print("Time:", t)
+	#print(h)
 
 # Haetaan config-listasta tietoja
 	configList = []
@@ -29,10 +29,10 @@ while True:
 	rows = cursor.fetchall()
 	for row in rows:
 		configList = [row]
-	print("Current hour:", test[3])
-	print("Min. price:", configList[0][2])
+	#print("Current hour:", test[3])
+	#print("Min. price:", configList[0][2])
 	minPrice=configList[0][2]
-	print("Max. price:", configList[0][3])
+	#print("Max. price:", configList[0][3])
 	maxPrice=configList[0][3]
 
 # Haetaan nykyisen tunnin sähkönhinta
@@ -42,7 +42,7 @@ while True:
 	for rivi in rivit:
 		priceList = [rivi]
 
-	print("Current price:", priceList[0][4])
+	#print("Current price:", priceList[0][4])
 	currentPrice=priceList[0][4]
 	connection.close()	# Suljetaan yhteys
 
@@ -96,9 +96,9 @@ while True:
 		hintapinni = LED_YELLOW
 
 # Luodaan tekstitiedosto logitukselle
-	f=open("ledlog.txt", "a")
-	f.write(f"{t} {h} LED käynyt päällä Current Price: {currentPrice} Väri: {hintapinni}\n")
-	f.close()
+	#f=open("ledlog.txt", "a")
+	#f.write(f"{t} {h} LED käynyt päällä Current Price: {currentPrice} Väri: {hintapinni}\n")
+	#f.close()
 	
 	hours = test[3]	
 # Sisempi silmukka, joka pyörii tunnin ajan ja poistutaan tunnin vaihtuessa ulompaan silmukkaan

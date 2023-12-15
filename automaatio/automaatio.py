@@ -26,11 +26,11 @@ rows = cursor.fetchall()
 for row in rows:
     configList = [row]
 
-print("Min temperature: ", configList[0][0])
+#print("Min temperature: ", configList[0][0])
 minTemp=configList[0][0] 
-print("Min price: ", configList[0][2])
+#print("Min price: ", configList[0][2])
 minPrice=configList[0][2]
-print("Max price: ", configList[0][3])
+#print("Max price: ", configList[0][3])
 maxPrice=configList[0][3]
 
 
@@ -42,7 +42,7 @@ for rivi in rivit:
     priceList = [rivi]
 	
 roundedPrice = round(priceList[0][4], 5)
-print("Price now: ", roundedPrice)
+#print("Price now: ", roundedPrice)
 
 # Haetaan viimeisin mitattu lämpötila Temperature -taulusta
 temperatureList = []
@@ -52,7 +52,7 @@ rows = cursor.fetchall()
 for row in rows:
     temperatureList = [row]
 
-print("Latest temperature: ", temperatureList[0][2])
+#print("Latest temperature: ", temperatureList[0][2])
 currentTemp=temperatureList[0][2]
 connection.close()#suljetaan yhteys
 
@@ -65,14 +65,14 @@ if minPrice >= roundedPrice:	# Jos sähkönhinta on alle tai yhtäsuuri kuin min
 # Jos nykyinen lämpötila on alle minimiarvon, kytketään rele päälle
 if currentTemp < minTemp+tempOffset:
     os.system("python /home/omega/PythonKoodit/projektiomega/rele/rele.py on")
-    f1=open("automaatiolog.txt", "a")
-    f1.write(f"{t} {h} Rele ON currentTemp: {currentTemp} tempOffset: {tempOffset}\n")
-    f1.close()
+    #f1=open("automaatiolog.txt", "a")
+    #f1.write(f"{t} {h} Rele ON currentTemp: {currentTemp} tempOffset: {tempOffset}\n")
+    #f1.close()
 
 # Jos nykyinen lämpötila on yli minimiarvon, kytketään rele pois päältä
 elif currentTemp > minTemp+tempOffset:
     os.system("python /home/omega/PythonKoodit/projektiomega/rele/rele.py off")
-    f2=open("automaatiolog.txt", "a")
-    f2.write(f"{t} {h} Rele OFF currentTemp: {currentTemp} tempOffset: {tempOffset}\n")
-    f2.close()
+   #f2=open("automaatiolog.txt", "a")
+    #f2.write(f"{t} {h} Rele OFF currentTemp: {currentTemp} tempOffset: {tempOffset}\n")
+    #f2.close()
 

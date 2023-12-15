@@ -18,7 +18,7 @@ except sqlite3.Error as e:
 # Haetaan datetime -kirjastosta vaadittavat ajanmääreet
 x = datetime.datetime.now()         # Nykyinen ajanmääre
 t = x.strftime("%Y-%m-%d %H:%M:%S") # Aika ilmoitetaan muodossa vuosi-kuukausi-päivä tunti:minuutti:sekunti
-print("Time:", t)
+#print("Time:", t)
 
 # Haetaan ConfigValues -taulu, josta haetaan raja-arvot
 configList = []
@@ -28,7 +28,7 @@ rows = cursor.fetchall()
 for row in rows:
     configList = [row]
 
-print("Min. temperature: ", configList[0][0])   # Tulostetaan minimi lämpöarvo
+#print("Min. temperature: ", configList[0][0])   # Tulostetaan minimi lämpöarvo
 minTemp=configList[0][0] 
 time.sleep(1)
 
@@ -36,10 +36,10 @@ time.sleep(1)
 humidity, temperature = Adafruit_DHT.read_retry(22, 18) # 22 on DHT 22 ja 18 on GPIO 18 pinni
 
 # Tarkistetaan saadaanko lämpötilalle ja kosteudelle arvoja
-if humidity is not None and temperature is not None:
-    print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
-else:
-    print('Failed to get reading. Try again!')
+#if humidity is not None and temperature is not None:
+#    print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
+#else:
+#    print('Failed to get reading. Try again!')
 
 # Muuttujat, joilla pyöristetään lämpötila ja kosteus tietokantaa varten
 temperature = round(temperature, 1)
@@ -54,9 +54,9 @@ connection.close()  # Suljetaan yhteys
 # jos anturin nykyinen mitattu lämpötila on pienempi kuin minimilämpötila niin suoritetaan laitteiden automatio-ohjaus pythonscripti.
 # sekä lokimerkintä. 
 if temperature < minTemp:
-    print("Suorita laitteiden automaatio-ohjaus rele päälle!")
+    #print("Suorita laitteiden automaatio-ohjaus rele päälle!")
     os.system("python /home/omega/PythonKoodit/projektiomega/automaatio/automaatio.py")
 
 elif temperature > minTemp:
-    print("Suorita laitteiden automaatio-ohjaus rele pois päältä!")
+    #print("Suorita laitteiden automaatio-ohjaus rele pois päältä!")
     os.system("python /home/omega/PythonKoodit/projektiomega/automaatio/automaatio.py")
