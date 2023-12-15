@@ -23,3 +23,25 @@
 2023-12-14 09 ledi käynyt päällä
 2023-12-14 10 ledi käynyt päällä
 2023-12-14 10 LED käynyt päällä Current Price: 20.83448 Väri: 16
+2023-12-14 12 LED käynyt päällä Current Price: 22.28032 Väri: 16
+2023-12-14 13 LED käynyt päällä Current Price: 19.21876 Väri: 16
+2023-12-14 14 LED käynyt päällä Current Price: 17.40836 Väri: 16
+2023-12-14 15 LED käynyt päällä Current Price: 19.21876 Väri: 16
+2023-12-14 16 LED käynyt päällä Current Price: 23.357879999999998 Väri: 16
+2023-12-14 17 LED käynyt päällä Current Price: 23.316959999999998 Väri: 16
+2023-12-14 18 LED käynyt päällä Current Price: 22.39812 Väri: 16
+2023-12-14 19 LED käynyt päällä Current Price: 17.9056 Väri: 16
+2023-12-14 20 LED käynyt päällä Current Price: 15.248280000000001 Väri: 16
+2023-12-14 21 LED käynyt päällä Current Price: 13.62636 Väri: 16
+2023-12-14 22 LED käynyt päällä Current Price: 14.26124 Väri: 16
+2023-12-14 23 LED käynyt päällä Current Price: 11.71304 Väri: 24
+2023-12-15 00 LED käynyt päällä Current Price: 10.610679999999999 Väri: 24
+2023-12-15 01 LED käynyt päällä Current Price: 10.732199999999999 Väri: 24
+2023-12-15 02 LED käynyt päällä Current Price: 10.327960000000001 Väri: 24
+2023-12-15 03 LED käynyt päällä Current Price: 9.998119999999998 Väri: 24
+2023-12-15 04 LED käynyt päällä Current Price: 9.720360000000001 Väri: 24
+2023-12-15 05 LED käynyt päällä Current Price: 9.918759999999999 Väri: 24
+2023-12-15 06 LED käynyt päällä Current Price: 13.876839999999998 Väri: 16
+2023-12-15 07 LED käynyt päällä Current Price: 19.09724 Väri: 16
+2023-12-15 08 LED käynyt päällä Current Price: 22.816 Väri: 16
+2023-12-15 09 LED käynyt päällä Current Price: 22.816 Väri: 16

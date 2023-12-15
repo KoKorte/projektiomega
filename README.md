@@ -5,14 +5,14 @@
 
 ## Tools and technologies
 - Raspberry Pi 4
-- DHT 22 temperature and humidity component
+- DHT22 temperature and humidity sensor
 - Relay module
 - SQLite database
 
 ## Members
-Juntunen Sampo
-Korteniemi Niko
-Penttinen Kimmo
+- Juntunen Sampo
+- Korteniemi Niko
+- Penttinen Kimmo
 
 ## License
 This project falls under MIT license
