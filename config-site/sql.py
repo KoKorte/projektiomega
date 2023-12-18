@@ -2,12 +2,21 @@ import sqlite3
 import config
 
 # Set the path to database file
-path = config.database_path + "website.db"
+path = config.database_path + "config.db"
 
 # Create tables to database if they don't exist already
 def createTables():
     conn = sqlite3.connect(path)
     sql = conn.cursor()
+    
+    # Create the ConfigValues table
+    clause = "create table if not exists ConfigValues ("
+    clause += "Temp_low real, "
+    clause += "Temp_high real, "
+    clause += "Price_low real, "
+    clause += "Price_high real)"
+    sql.execute(clause)
+    
     # Create the Weather table
     clause = "create table if not exists Weather ("                 
     clause += "WID integer primary key autoincrement, "     
@@ -113,6 +122,29 @@ def insertElectricityPrices(parameters):
     conn.commit()
     conn.close()
 
+# Insert configuration values to the ConfigValues table
+def insertConfigValues(parameters):
+    conn = sqlite3.connect(path)
+    sql = conn.cursor()
+    # Check if table is empty
+    clause = "select count(temp_low) from ConfigValues"
+    count = sql.execute(clause).fetchone()
+    if count == 0:
+        # Table is empty, insert the data
+        clause = "insert into ConfigValues "
+        clause += "(Temp_low, Temp_high, Price_low, Price_high) "
+        clause += "values (?, ?, ?, ?)"
+    else:
+        # Table is not empty, update the data
+        clause = "update Configvalues set "
+        clause += "Temp_low = ?, "
+        clause += "Temp_high = ?, "
+        clause += "Price_low = ?, "
+        clause += "Price_high = ?"
+    sql.execute(clause, parameters)
+    conn.commit()
+    conn.close()
+
 # Get the latest weather data
 def getLatestWeather():
     conn = sqlite3.connect(path)
@@ -143,6 +175,15 @@ def getTodaysElectricityPrices(parameters):
     sql = conn.cursor()
     clause = "select DateHour, round(Price,2) from ElectricityPrices where PriceDate = ?"
     value = sql.execute(clause, parameters).fetchall()
+    conn.close()
+    return value
+
+# Get the configuration values
+def getConfigValues():
+    conn = sqlite3.connect(path)
+    sql = conn.cursor()
+    clause = "select Temp_low, Temp_high, Price_low, Price_high from ConfigValues"
+    value = sql.execute(clause).fetchone()    
     conn.close()
     return value
 

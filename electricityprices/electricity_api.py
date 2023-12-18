@@ -1,6 +1,6 @@
 from datetime import date, datetime, timezone, timedelta
 from requests import get
-from sql import createTables, insertElectricityLog, insertElectricityPrices, checkElectricityDate, getTodaysElectricityPrices
+from sql import createTables, insertElectricityLog, insertElectricityPrices, checkElectricityDate
 import xmltodict
 import config
 

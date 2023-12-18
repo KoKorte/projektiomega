@@ -1,0 +1,66 @@
+{# This is a jinja2 comment, which flask has kindly implemented, you should read more and learn #}
+{# about this different jinja codes as they are quite handy. You can do useful things with these, #} 
+{# including inserting variables (see stylesheet href as example), if-else structures and for loops. #}
+
+{# For testing purposes, I have layout.html, which is to be used as base for all webpages #}
+{# So we need to extend this file to use layout.html #}
+
+{% extends "layout.html" %}
+
+{# In layout.html, there is a reserved block for header info, in which we can insert code from #}
+{# index.html  So here, we insert stylesheet to page header, in case we want to use different #}
+{# css for other webpages. #}
+
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/default.css') }}"
+{% endblock %}
+
+{# Similarly in layout.html, there is block page body, in which we insert actual content of this page. #}
+
+{% block body %}    
+<div>    
+    <form action="/config" method="post">
+    <h1>Konfigurointisivu</h1>
+</div>
+{% if values["message"] %}
+    <div>
+        <h3>{{ values["message"] }}</h3>
+    </div>
+{% endif %}
+{% if values["errormessage"] %}
+    <div>
+        <h3 style="color:red">{{ values["errormessage"] }}</h3>
+    </div>
+{% endif %}
+<div>
+    <p>
+        <div class="row">
+            <div class="cell_left">Lämpötilan alaraja:</div>
+            <div class="cell_right"><input type="number" step="0.1" name="templow" value="{{ values['templow'] }}" tabindex="0" /> &deg;C</div>
+        </div>
+    </p>
+    <p>
+        <div class="row">
+            <div class="cell_left">Lämpötilan yläraja:</div>
+            <div class="cell_right"><input type="number" step="0.1" name="temphigh" value="{{ values['temphigh'] }}" tabindex="1" /> &deg;C</div>
+        </div>
+    </p>
+    <p>
+        <div class="row">
+            <div class="cell_left">Sähkönhinnan alaraja:</div>
+            <div class="cell_right"><input type="number" step="0.1" name="pricelow" value="{{ values['pricelow'] }}" tabindex="2" /> c/kWh</div>
+        </div>
+    </p>
+    <p>
+        <div class="row">
+            <div class="cell_left">Sähkönhinnan yläraja:</div>
+            <div class="cell_right"><input type="number" step="0.1" name="pricehigh" value="{{ values['pricehigh'] }}" tabindex="3" /> c/kWh</div>
+        </div> 
+    </p>
+    <input type="submit" value="Tallenna" class="default_button" tabindex="4" />
+    </form>
+    <form action="/" method="post">
+        <input type="submit" value="Etusivulle" class="default_button" tabindex="5" />    
+    </form>
+</div>
+{% endblock %}

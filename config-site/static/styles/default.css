@@ -22,6 +22,10 @@ span {
     padding-right: 2em;
     color: lightgreen;
 }
+input[type="number"] {
+    width: 5em;
+    
+}
 div {
     border-color: green;
     border-style: solid;
@@ -36,14 +40,6 @@ div {
     margin-right: 0.5em;
     margin-bottom: 0.5em;    
 }
-/*
-.div_title {    
-    margin-top: 0.5em;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-    margin-bottom: 0.5em;
-}
-*/
 .div_box {
     
     width: 20em;
@@ -56,15 +52,47 @@ div {
     padding-right: 1em;
 
 }
+.row {
+    border-style: none;
+    width: 30em;
+    float: left;
+}
+.cell_left {
+    border-style: none;
+    width: 9em;
+    float: left;
+}
+.cell_right {
+    border-style: none;
+    width: 15em;
+    float: left;
+}
 .compass {            
     background-image: url(/static/images/compass.jpg);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 25em auto;
 }
+.default_button {
+    background-color: lightgreen;
+    border-style: solid;
+    border-width: 0.3em;
+    border-radius: 0.5em 0.5em 0.5em 0.5em;
+    border-color: green;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    margin-top: 0.5em;
+    margin-left: 2em;
+    margin-right: 0.5em;
+    margin-bottom: 0.5em;
+    color: green;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
 #img_photo {        
     width: 22em;
     height: auto;
     object-fit: contain;
-    
 }
