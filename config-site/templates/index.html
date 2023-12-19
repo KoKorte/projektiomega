@@ -21,15 +21,24 @@
     <div>
         <h1>Hello Oulu!</h1>
     </div>
-    {# This block is commented as it is no longer needed. Keeping it in for debug tests
-        average1, average2, tomorrow
-    <div>
-        <h2>Säätilanne Intiössä</h2>
+    {# This block is commented as it is no longer needed. Keeping it in for debug tests        
+    <div>        
         {% for key, value in values.items() %}
             <p>{{ key }}:&emsp;{{ value }}</p>
         {% endfor %}
     </div>
-    #}    
+    #}
+    {% if 'devicetime' in values %}
+    <div>
+        <h2>Tietoja laitteelta</h2>
+        <div class="div_box">
+            <h3>Viimeisin tilanne:</h3>
+            <p><span>{{ values["devicetemperature"] }} &deg;</span>Lämpötila:</p>
+            <p><span>{{ values["devicehumidity"] }} %</span>Kosteus:</p>
+            <p><span>{{ values["devicetime"] }}</span>Mittausaika:</p>
+        </div>
+    </div>
+    {% endif %}
     <div>
         <h2>Säätilanne Intiössä</h2>
         <div class="div_box">
@@ -86,12 +95,11 @@
             <p><a href="https://www.entsoe.eu/">European Network of Transmission System Operators for electricity</a> (ENTSO-E)</p>            
             <p><a href="https://transparency.entsoe.eu/">Transparency Platform</a></p>
         </div>
-    </div>
-    <!--<div>-->
-        <form action="/config" method="post">
-            <input type="submit" value="Konfigurointisivu" class="default_button" />
-        </form>
-    <!--</div>-->
+    </div>    
+    <form action="/config" method="post">
+        <input type="submit" value="Konfigurointisivu" class="default_button" />
+    </form>        
+    
     {% endif %}    
 {% endblock %}
 

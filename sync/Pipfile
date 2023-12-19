@@ -4,11 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
 requests = "*"
-pillow = "*"
-xmltodict = "*"
-jsonify = "*"
 
 [dev-packages]
 

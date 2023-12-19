@@ -53,6 +53,13 @@ def createTables():
     clause += "Price real)"
     sql.execute(clause)
 
+    # Create DeviceData table
+    clause = "create table if not exists DeviceData ("
+    clause += "Timestamp datetime not null, "
+    clause += "Temperature real not null, "
+    clause += "Humidity real not null)"
+    sql.execute(clause)
+
     # Commit the changes to the database
     conn.commit()
     conn.close()
@@ -145,6 +152,29 @@ def insertConfigValues(parameters):
     conn.commit()
     conn.close()
 
+# Insert data to the DeviceData table
+def insertDeviceData(parameters):
+    conn = sqlite3.connect(path)
+    sql = conn.cursor()
+    # Check if table is empty
+    clause = "select count(Timestamp) from DeviceData"
+    count = sql.execute(clause).fetchone()
+    print(count)
+    if count[0] == 0:
+        # Table is empty, insert the data
+        clause = "insert into DeviceData "
+        clause += "(Timestamp, Temperature, Humidity) "
+        clause += "values (?, ?, ?)"
+    else:
+        # Table is not empty, update the data
+        clause = "update DeviceData set "
+        clause += "Timestamp = ?, "
+        clause += "Temperature = ?, "
+        clause += "Humidity = ?"        
+    sql.execute(clause, parameters)
+    conn.commit()
+    conn.close()
+
 # Get the latest weather data
 def getLatestWeather():
     conn = sqlite3.connect(path)
@@ -184,6 +214,15 @@ def getConfigValues():
     sql = conn.cursor()
     clause = "select Temp_low, Temp_high, Price_low, Price_high from ConfigValues"
     value = sql.execute(clause).fetchone()    
+    conn.close()
+    return value
+
+# Get the data from device
+def getDeviceData():
+    conn = sqlite3.connect(path)
+    sql = conn.cursor()
+    clause = "select Timestamp, Temperature, Humidity from DeviceData"
+    value = sql.execute(clause).fetchone()
     conn.close()
     return value
 
