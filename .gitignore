@@ -154,4 +154,6 @@ cython_debug/
 
 # Configuration files
 config-site/config.py
+electricityprices/config.py
+sync/config.py
 
