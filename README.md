@@ -38,23 +38,3 @@ On configuration page, user can set values to control device on how to behave re
 
 ## License
 This project falls under MIT license
-
-AUTOMAATIOLOG TESTAUSTA (VÄLIAIKAINEN)
-2023-12-14 15 Rele OFF currentTemp: 22.1 tempOffset: 0
-2023-12-14 16 Rele OFF currentTemp: 22.2 tempOffset: 0
-2023-12-14 16 Rele OFF currentTemp: 21.8 tempOffset: 0
-2023-12-14 17 Rele OFF currentTemp: 21.8 tempOffset: 0
-2023-12-14 17 Rele OFF currentTemp: 21.6 tempOffset: 0
-2023-12-14 18 Rele ON currentTemp: 21.4 tempOffset: 0
-2023-12-14 18 Rele ON currentTemp: 21.2 tempOffset: 0
-2023-12-14 19 Rele ON currentTemp: 21.2 tempOffset: 0
-2023-12-14 19 Rele ON currentTemp: 21.1 tempOffset: 0
-2023-12-14 20 Rele ON currentTemp: 21.1 tempOffset: 0
-
-LEDILOG TESTAUS
-2023-12-15 03 LED käynyt päällä Current Price: 9.998119999999998 Väri: 24
-2023-12-15 04 LED käynyt päällä Current Price: 9.720360000000001 Väri: 24
-2023-12-15 05 LED käynyt päällä Current Price: 9.918759999999999 Väri: 24
-2023-12-15 06 LED käynyt päällä Current Price: 13.876839999999998 Väri: 16
-2023-12-15 07 LED käynyt päällä Current Price: 19.09724 Väri: 16
-2023-12-15 08 LED käynyt päällä Current Price: 22.816 Väri: 16
