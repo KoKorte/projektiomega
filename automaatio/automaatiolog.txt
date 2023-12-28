@@ -1,5 +1,0 @@
-2023-12-14 10Rele OFF
-2023-12-14 10Rele OFF
-2023-12-14 10 Rele OFF currentTemp: 21.8 tempOffset: 0
-2023-12-14 10 Rele ON currentTemp: 21.8 tempOffset: 0
-2023-12-14 10 Rele OFF currentTemp: 21.8 tempOffset: 0
